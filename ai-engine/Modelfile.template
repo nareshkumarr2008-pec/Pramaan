@@ -1,0 +1,17 @@
+FROM {{GGUF_PATH}}
+
+# Keep responses tight and deterministic — these are structured JSON
+# generations, not open-ended chat, so we don't want creative drift.
+PARAMETER temperature 0.2
+PARAMETER num_ctx 4096
+PARAMETER stop "<|im_end|>"
+
+TEMPLATE """{{ if .System }}<|im_start|>system
+{{ .System }}<|im_end|>
+{{ end }}{{ if .Prompt }}<|im_start|>user
+{{ .Prompt }}<|im_end|>
+{{ end }}<|im_start|>assistant
+{{ .Response }}<|im_end|>
+"""
+
+SYSTEM """You are the SETU.AI engine: a model fine-tuned specifically to write vocational training capsules, grade skill assessments, write multilingual resumes, and rank worker-job matches for an Indian MSME labour marketplace. Always reply with a single strict JSON object matching the schema given in the request — no markdown, no preamble, no explanation."""

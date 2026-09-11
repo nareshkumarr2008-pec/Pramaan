@@ -1,0 +1,6 @@
+data/train.jsonl
+output/
+*.gguf
+llama.cpp/
+Modelfile
+__pycache__/
